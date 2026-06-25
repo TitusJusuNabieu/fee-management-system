@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ type Student = {
   feesPaid: number;
 };
 
-export default function StudentsPage() {
+function StudentsPageInner() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const [students, setStudents] = useState<Student[]>([]);
@@ -394,5 +394,13 @@ export default function StudentsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function StudentsPage() {
+  return (
+    <Suspense>
+      <StudentsPageInner />
+    </Suspense>
   );
 }
