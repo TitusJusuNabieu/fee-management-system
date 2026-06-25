@@ -38,7 +38,7 @@ function LoginForm() {
           style={{ background: "rgba(255,255,255,0.06)", borderRight: "1px solid rgba(255,255,255,0.1)" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/enc-logo.png" alt="Every Nation College" width={150} height={150} className="mb-6 drop-shadow-2xl" />
+          <img src="/enc-logo-removebg.png" alt="Every Nation College" width={150} height={150} className="mb-6 drop-shadow-2xl" />
           <h1 className="text-2xl font-bold text-center leading-snug text-white">
             Every Nation College
           </h1>
@@ -60,7 +60,7 @@ function LoginForm() {
           {/* Mobile logo */}
           <div className="flex lg:hidden flex-col items-center mb-6">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/enc-logo.png" alt="ENC Logo" width={72} height={72} className="mb-3" />
+            <img src="/enc-logo-removebg.png" alt="ENC Logo" width={72} height={72} className="mb-3" />
             <h1 className="text-lg font-bold text-gray-900">Every Nation College</h1>
             <p className="text-gray-500 text-xs mt-0.5">Fee Management System · Bo, Sierra Leone</p>
           </div>

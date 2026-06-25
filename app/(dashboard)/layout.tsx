@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="px-4 py-5 border-b border-blue-700">
         <div className="flex items-center gap-3">
           <Image
-            src="/enc-logo.png"
+            src="/enc-logo-removebg.png"
             alt="ENC Logo"
             width={40}
             height={40}
@@ -184,7 +184,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <Image src="/enc-logo.png" alt="ENC" width={28} height={28} />
+          <Image src="/enc-logo-removebg.png" alt="ENC" width={28} height={28} />
           <span className="font-semibold text-white text-sm">Every Nation College</span>
         </header>
 

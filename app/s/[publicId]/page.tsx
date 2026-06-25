@@ -41,20 +41,18 @@ export default async function PublicStudentPage({
     <div className="min-h-screen bg-gray-100 flex items-start justify-center p-4 py-8">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
         {/* Header */}
-        <div className="flex items-center gap-4 px-6 py-5" style={{ background: "linear-gradient(135deg, #162d6d 0%, #1e3a8a 100%)" }}>
-          <Image src="/enc-logo.png" alt="ENC Logo" width={56} height={56} className="flex-shrink-0" />
-          <div className="text-white">
-            <p className="font-bold text-base leading-tight">Every Nation College</p>
-            <p className="text-blue-200 text-xs">Equipping Leaders for Effective Services</p>
-            <p className="text-blue-300 text-xs mt-0.5">Bo, Sierra Leone · enc.edu.sl</p>
-          </div>
-        </div>
-
-        {/* Title bar */}
-        <div className="px-6 py-3 text-center" style={{ backgroundColor: "#d97706" }}>
-          <p className="text-white font-semibold text-sm tracking-wide uppercase">
+        <div
+          className="flex flex-col items-center justify-center px-6 py-6 text-white text-center"
+          style={{ background: "linear-gradient(160deg, #0f1f4a 0%, #162d6d 55%, #1e3a8a 100%)" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/enc-logo-removebg.png" alt="ENC Logo" width={72} height={72} className="mb-3 drop-shadow-lg" />
+          <p className="font-bold text-lg leading-tight tracking-wide">Every Nation College</p>
+          <p className="text-blue-200 text-xs mt-1">Equipping Leaders for Effective Services</p>
+          <p className="text-blue-300 text-xs mt-0.5">Bo, Sierra Leone · enc.edu.sl</p>
+          <div className="mt-4 px-5 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase" style={{ backgroundColor: "#d97706" }}>
             Student Fee Receipt
-          </p>
+          </div>
         </div>
 
         {/* Student Info */}

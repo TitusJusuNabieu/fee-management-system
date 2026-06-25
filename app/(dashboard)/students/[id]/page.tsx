@@ -131,16 +131,14 @@ export default function StudentDetailPage() {
       {/* Print-only ticket */}
       <div className="print-only" ref={printRef}>
         <div style={{ fontFamily: "serif", maxWidth: 600, margin: "0 auto", padding: 32 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, borderBottom: "3px solid #1e3a8a", paddingBottom: 16, marginBottom: 16 }}>
+          <div style={{ textAlign: "center", borderBottom: "3px solid #1e3a8a", paddingBottom: 16, marginBottom: 16 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/enc-logo.png" alt="ENC Logo" style={{ width: 64, height: 64 }} />
-            <div>
-              <h1 style={{ fontSize: 18, fontWeight: "bold", color: "#1e3a8a", margin: 0 }}>EVERY NATION COLLEGE</h1>
-              <p style={{ fontSize: 11, color: "#6b7280", margin: "2px 0 0" }}>Equipping Leaders for Effective Services</p>
-              <p style={{ fontSize: 11, color: "#6b7280", margin: "1px 0 0" }}>Bo, Sierra Leone · enc.edu.sl</p>
-            </div>
-            <div style={{ marginLeft: "auto", textAlign: "center", background: "#d97706", color: "white", padding: "6px 14px", borderRadius: 6 }}>
-              <p style={{ fontSize: 11, fontWeight: "bold", margin: 0 }}>FEE RECEIPT</p>
+            <img src="/enc-logo-removebg.png" alt="ENC Logo" style={{ width: 72, height: 72, margin: "0 auto 8px" }} />
+            <h1 style={{ fontSize: 20, fontWeight: "bold", color: "#1e3a8a", margin: 0, letterSpacing: 1 }}>EVERY NATION COLLEGE</h1>
+            <p style={{ fontSize: 11, color: "#6b7280", margin: "3px 0 0" }}>Equipping Leaders for Effective Services</p>
+            <p style={{ fontSize: 11, color: "#6b7280", margin: "2px 0 8px" }}>Bo, Sierra Leone · enc.edu.sl</p>
+            <div style={{ display: "inline-block", background: "#d97706", color: "white", padding: "4px 18px", borderRadius: 20 }}>
+              <p style={{ fontSize: 11, fontWeight: "bold", margin: 0, letterSpacing: 2 }}>FEE RECEIPT</p>
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
