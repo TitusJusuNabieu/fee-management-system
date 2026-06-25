@@ -1,0 +1,28 @@
+fees.enc.edu.sl {
+    reverse_proxy localhost:1300
+
+    # Compress responses
+    encode gzip
+
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    # Cache static Next.js assets aggressively
+    @static {
+        path /_next/static/*
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+
+    log {
+        output file /var/log/caddy/enc-ticket.log {
+            roll_size 10mb
+            roll_keep 5
+        }
+    }
+}
