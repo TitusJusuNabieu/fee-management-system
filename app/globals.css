@@ -26,6 +26,28 @@ body {
   .no-print { display: none !important; }
   .print-only { display: block !important; }
   body { background: white !important; }
+  @page { size: A4 portrait; margin: 8mm; }
+  .print-receipt-slot {
+    height: 130mm;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-sizing: border-box;
+  }
+  .print-cut-line {
+    height: 9mm;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+    font-size: 8pt;
+    font-family: sans-serif;
+  }
+  .print-cut-line::before,
+  .print-cut-line::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dashed #9ca3af;
+  }
 }
 
 .print-only { display: none; }

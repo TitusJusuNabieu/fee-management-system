@@ -128,71 +128,86 @@ export default function StudentDetailPage() {
 
   return (
     <div>
-      {/* Print-only ticket */}
+      {/* Print-only ticket — two per A4 page */}
       <div className="print-only" ref={printRef}>
-        <div style={{ fontFamily: "serif", maxWidth: 600, margin: "0 auto", padding: 32 }}>
-          <div style={{ textAlign: "center", borderBottom: "3px solid #1e3a8a", paddingBottom: 16, marginBottom: 16 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/enc-logo-removebg.png" alt="ENC Logo" style={{ width: 72, height: 72, margin: "0 auto 8px" }} />
-            <h1 style={{ fontSize: 20, fontWeight: "bold", color: "#1e3a8a", margin: 0, letterSpacing: 1 }}>EVERY NATION COLLEGE</h1>
-            <p style={{ fontSize: 11, color: "#6b7280", margin: "3px 0 0" }}>Equipping Leaders for Effective Services</p>
-            <p style={{ fontSize: 11, color: "#6b7280", margin: "2px 0 8px" }}>Bo, Sierra Leone · enc.edu.sl</p>
-            <div style={{ display: "inline-block", background: "#d97706", color: "white", padding: "4px 18px", borderRadius: 20 }}>
-              <p style={{ fontSize: 11, fontWeight: "bold", margin: 0, letterSpacing: 2 }}>FEE RECEIPT</p>
-            </div>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-            <div>
-              <h2 style={{ fontSize: 18, fontWeight: "bold" }}>{student.fullName}</h2>
-              <p style={{ color: "#6b7280", fontSize: 12 }}>ID: {student.idNumber}</p>
-              <p style={{ fontSize: 13, marginTop: 4 }}>{student.programme}</p>
-              <p style={{ fontSize: 12, color: "#6b7280" }}>A/Y: {student.academicYear} · Level {student.level}</p>
-            </div>
-            {qrUrl && <img src={qrUrl} alt="QR" style={{ width: 100, height: 100 }} />}
-          </div>
-          <table style={{ width: "100%", marginTop: 16, borderCollapse: "collapse", fontSize: 13 }}>
-            <tbody>
-              <tr style={{ background: "#f9fafb" }}>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb" }}>Expected Fees</td>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold" }}>{formatCurrency(student.expectedFees)}</td>
-              </tr>
-              <tr>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb" }}>Total Paid</td>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold", color: "#059669" }}>{formatCurrency(feesPaid)}</td>
-              </tr>
-              <tr style={{ background: "#f9fafb" }}>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb", fontWeight: "bold" }}>Balance</td>
-                <td style={{ padding: "8px 12px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold", color: balance > 0 ? "#dc2626" : "#059669" }}>{formatCurrency(balance)}</td>
-              </tr>
-            </tbody>
-          </table>
-          {student.payments.length > 0 && (
-            <div style={{ marginTop: 16 }}>
-              <h3 style={{ fontSize: 13, fontWeight: "bold", marginBottom: 6 }}>Payment History</h3>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-                <thead>
-                  <tr style={{ background: "#f9fafb" }}>
-                    <th style={{ padding: "6px 10px", border: "1px solid #e5e7eb", textAlign: "left" }}>Date</th>
-                    <th style={{ padding: "6px 10px", border: "1px solid #e5e7eb", textAlign: "right" }}>Amount</th>
-                    <th style={{ padding: "6px 10px", border: "1px solid #e5e7eb", textAlign: "left" }}>Reference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {student.payments.map((p) => (
-                    <tr key={p.id}>
-                      <td style={{ padding: "6px 10px", border: "1px solid #e5e7eb" }}>{formatDate(p.paymentDate)}</td>
-                      <td style={{ padding: "6px 10px", border: "1px solid #e5e7eb", textAlign: "right" }}>{formatCurrency(p.amount)}</td>
-                      <td style={{ padding: "6px 10px", border: "1px solid #e5e7eb" }}>{p.reference || "-"}</td>
+        {[0, 1].map((i) => (
+          <div key={i}>
+            {i === 1 && <div className="print-cut-line">✂ cut here</div>}
+            <div className="print-receipt-slot">
+              <div style={{ fontFamily: "Arial, sans-serif", padding: "6mm 5mm", height: "100%", boxSizing: "border-box" as const }}>
+                {/* Header */}
+                <div style={{ textAlign: "center", borderBottom: "2px solid #1e3a8a", paddingBottom: 5, marginBottom: 7 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/enc-logo-removebg.png" alt="ENC Logo" style={{ width: 40, height: 40, margin: "0 auto 4px", display: "block" }} />
+                  <div style={{ fontSize: 13, fontWeight: "bold", color: "#1e3a8a", letterSpacing: 1 }}>EVERY NATION COLLEGE</div>
+                  <div style={{ fontSize: 8, color: "#6b7280", margin: "2px 0" }}>Equipping Leaders for Effective Services · Bo, Sierra Leone · enc.edu.sl</div>
+                  <div style={{ display: "inline-block", background: "#d97706", color: "white", padding: "2px 14px", borderRadius: 12, marginTop: 3 }}>
+                    <span style={{ fontSize: 8, fontWeight: "bold", letterSpacing: 2 }}>FEE RECEIPT</span>
+                  </div>
+                </div>
+
+                {/* Student info + QR */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 7 }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: "bold", margin: 0 }}>{student.fullName}</div>
+                    <div style={{ color: "#6b7280", fontSize: 9, marginTop: 1 }}>Matric No: {student.idNumber}</div>
+                    <div style={{ fontSize: 10, marginTop: 3 }}>{student.programme}</div>
+                    <div style={{ fontSize: 9, color: "#6b7280", marginTop: 1 }}>A/Y: {student.academicYear} · Level {student.level}</div>
+                  </div>
+                  {qrUrl && <img src={qrUrl} alt="QR" style={{ width: 70, height: 70, flexShrink: 0 }} />}
+                </div>
+
+                {/* Fee summary */}
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10, marginBottom: 7 }}>
+                  <tbody>
+                    <tr style={{ background: "#f9fafb" }}>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb" }}>Expected Fees</td>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold" }}>{formatCurrency(student.expectedFees)}</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    <tr>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb" }}>Total Paid</td>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold", color: "#059669" }}>{formatCurrency(feesPaid)}</td>
+                    </tr>
+                    <tr style={{ background: "#f9fafb" }}>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb", fontWeight: "bold" }}>Balance</td>
+                      <td style={{ padding: "4px 8px", border: "1px solid #e5e7eb", textAlign: "right", fontWeight: "bold", color: balance > 0 ? "#dc2626" : "#059669" }}>{formatCurrency(balance)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                {/* Payment history */}
+                {student.payments.length > 0 && (
+                  <div>
+                    <div style={{ fontSize: 9, fontWeight: "bold", marginBottom: 3 }}>Payment History</div>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 9 }}>
+                      <thead>
+                        <tr style={{ background: "#f9fafb" }}>
+                          <th style={{ padding: "3px 6px", border: "1px solid #e5e7eb", textAlign: "left" }}>Date</th>
+                          <th style={{ padding: "3px 6px", border: "1px solid #e5e7eb", textAlign: "right" }}>Amount</th>
+                          <th style={{ padding: "3px 6px", border: "1px solid #e5e7eb", textAlign: "left" }}>Reference</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {student.payments.map((p) => (
+                          <tr key={p.id}>
+                            <td style={{ padding: "3px 6px", border: "1px solid #e5e7eb" }}>{formatDate(p.paymentDate)}</td>
+                            <td style={{ padding: "3px 6px", border: "1px solid #e5e7eb", textAlign: "right" }}>{formatCurrency(p.amount)}</td>
+                            <td style={{ padding: "3px 6px", border: "1px solid #e5e7eb" }}>{p.reference || "-"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div style={{ textAlign: "center", fontSize: 8, color: "#9ca3af", marginTop: 6 }}>
+                  Printed {new Date().toLocaleString()} · Scan QR code to verify
+                </div>
+              </div>
             </div>
-          )}
-          <p style={{ textAlign: "center", fontSize: 10, color: "#9ca3af", marginTop: 24 }}>
-            Printed {new Date().toLocaleString()} · Scan QR code to verify
-          </p>
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* Screen view */}
