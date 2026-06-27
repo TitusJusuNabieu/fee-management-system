@@ -226,6 +226,34 @@ export default function StudentDetailPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {isEditor && !editing && (
+              <button
+                onClick={() => setEditing(true)}
+                className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+              </button>
+            )}
+            {isEditor && editing && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => { setEditing(false); setEditForm(student); setError(""); }}
+                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  {saving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            )}
             <a
               href={`/s/${student.publicId}`}
               target="_blank"
@@ -256,17 +284,7 @@ export default function StudentDetailPage() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-800">Student Information</h2>
-                {isEditor && (
-                  <button
-                    onClick={() => editing ? handleSave() : setEditing(true)}
-                    disabled={saving}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                      editing ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {editing ? (saving ? "Saving..." : "Save Changes") : "Edit"}
-                  </button>
-                )}
+                {editing && <p className="text-xs text-blue-600 font-medium">Editing — use Save Changes above</p>}
               </div>
 
               {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">{error}</div>}
@@ -302,9 +320,6 @@ export default function StudentDetailPage() {
                     <select value={editForm.level || ""} onChange={(e) => setEditForm((f) => ({ ...f, level: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                       {LEVELS.map((l) => <option key={l} value={l}>Level {l}</option>)}
                     </select>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <button onClick={() => setEditing(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50">Cancel</button>
                   </div>
                 </div>
               ) : (

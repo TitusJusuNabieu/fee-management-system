@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { formatCurrency, formatDate, getPaymentStatus, getAcademicYears, LEVELS } from "@/lib/utils";
+import { formatCurrency, formatDate, getPaymentStatus, getAcademicYears, LEVELS, PROGRAMMES } from "@/lib/utils";
 
 type Student = {
   id: string;
@@ -27,6 +27,8 @@ function StudentsPageInner() {
   const [search, setSearch] = useState("");
   const [filterYear, setFilterYear] = useState("");
   const [filterLevel, setFilterLevel] = useState("");
+  const [filterProgramme, setFilterProgramme] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const [importOpen, setImportOpen] = useState(searchParams.get("import") === "1");
   const [importFile, setImportFile] = useState<File | null>(null);
   const [importing, setImporting] = useState(false);
@@ -45,14 +47,15 @@ function StudentsPageInner() {
     if (search) qs.set("search", search);
     if (filterYear) qs.set("academicYear", filterYear);
     if (filterLevel) qs.set("level", filterLevel);
-    qs.set("limit", "100");
+    if (filterProgramme) qs.set("programme", filterProgramme);
+    qs.set("limit", "500");
 
     const res = await fetch(`/api/students?${qs}`);
     const data = await res.json();
     setStudents(data.students || []);
     setTotal(data.total || 0);
     setLoading(false);
-  }, [search, filterYear, filterLevel]);
+  }, [search, filterYear, filterLevel, filterProgramme]);
 
   useEffect(() => {
     const t = setTimeout(fetchStudents, 300);
@@ -97,13 +100,23 @@ function StudentsPageInner() {
 
   const academicYears = getAcademicYears();
 
+  const displayedStudents = filterStatus
+    ? students.filter((s) => {
+        const { color } = getPaymentStatus(s.expectedFees, s.feesPaid);
+        if (filterStatus === "fully_paid") return color === "green";
+        if (filterStatus === "partial") return color === "yellow";
+        if (filterStatus === "unpaid") return color === "red";
+        return true;
+      })
+    : students;
+
   return (
     <div>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Students</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{total} record{total !== 1 ? "s" : ""}</p>
+          <p className="text-gray-500 text-sm mt-0.5">{displayedStudents.length} record{displayedStudents.length !== 1 ? "s" : ""}{filterStatus ? ` (of ${total})` : ""}</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {isEditor && (
@@ -158,6 +171,14 @@ function StudentsPageInner() {
           className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <select
+          value={filterProgramme}
+          onChange={(e) => setFilterProgramme(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">All Programmes</option>
+          {PROGRAMMES.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+        <select
           value={filterYear}
           onChange={(e) => setFilterYear(e.target.value)}
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -171,7 +192,17 @@ function StudentsPageInner() {
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">All Levels</option>
-          {LEVELS.map((l) => <option key={l}>Level {l}</option>)}
+          {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
+        </select>
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">All Statuses</option>
+          <option value="fully_paid">Fully Paid</option>
+          <option value="partial">Partial</option>
+          <option value="unpaid">Unpaid</option>
         </select>
       </div>
 
@@ -196,7 +227,7 @@ function StudentsPageInner() {
                   <td colSpan={7} className="text-center py-12 text-gray-400">Loading...</td>
                 </tr>
               )}
-              {!loading && students.length === 0 && (
+              {!loading && displayedStudents.length === 0 && (
                 <tr>
                   <td colSpan={7} className="text-center py-12 text-gray-400">
                     No students found.{" "}
@@ -204,7 +235,7 @@ function StudentsPageInner() {
                   </td>
                 </tr>
               )}
-              {students.map((s) => {
+              {displayedStudents.map((s) => {
                 const { label, color } = getPaymentStatus(s.expectedFees, s.feesPaid);
                 const statusClasses = {
                   green: "bg-green-100 text-green-700",
